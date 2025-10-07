@@ -1,414 +1,461 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مواقيت الصلاة والإقامة</title>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <title>عرض ادعيه</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
+
     body {
-      font-family: "Amiri", serif;
+      font-family: 'Amiri', serif;
+      margin: 0;
+      padding: 15px;
       text-align: center;
-      color: #1a1a1a;
       direction: rtl;
+      background: transparent;
+      color: #333;
       min-height: 0vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: flex-start;
-      padding: 15px;
-      font-size: 25px;
+      align-items: center;
     }
-    .container {
-      width: 100%;
-      max-width: 800px;
-    }
+
     h1 {
-      font-size: 1.6em;
-      font-weight: 700;
-      color: #7b2cbf;
-      margin-bottom: 15px;
-      text-shadow: 2px 2px 4px rgba(123,44,191,0.2);
+      color: #fff;
+      margin-top: 15px;
+      font-size: 1.8em;
     }
-    .info-box {
-      background: #f9f9f9;
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 20px;
-      border: 1px solid #e0e0e0;
-      border-right: 4px solid #7b2cbf;
-      font-size: 0.95em;
-    }
-    .info-box p {
-      margin-bottom: 8px;
-      color: #5a189a;
-      font-weight: 700;
-    }
-    .info-option {
-      display: flex;
-      align-items: flex-start;
-      margin-bottom: 8px;
-      text-align: right;
-    }
-    .info-option .icon {
-      margin-left: 8px;
-      color: #7b2cbf;
-      font-weight: bold;
-    }
-    .option-desc {
-      flex: 1;
-      text-align: right;
-      font-size: 0.95em;
-    }
-    #controls {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 20px;
+
+    .container {
+      background: linear-gradient(to top, #2c3e50, #3a5d9f);
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+      padding: 20px;
+      margin: auto;
       width: 100%;
+      max-width: 1000px;
+      color: white;
     }
-    button {
-      background: linear-gradient(135deg, #e0aaff 0%, #c77dff 50%, #9d4edd 100%);
+
+    .bismillah {
+      font-size: 1.1em;
+      font-weight: bold;
+      margin: 12px 0;
+    }
+
+    .verse {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin: 20px 0;
+      padding: 15px;
+      background-color: rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      line-height: 1.8;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .button {
+      background-color: #38761d;
       color: white;
       border: none;
-      padding: 12px 20px;
-      border-radius: 50px;
-      cursor: pointer;
-      font-size: 1em;
-      font-family: "Amiri", serif;
-      font-weight: 700;
-      box-shadow: 0 4px 15px rgba(157,78,221,0.3);
-      transition: all 0.3s ease;
-      position: relative;
-      flex: 1;
-      min-width: 140px;
-    }
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(157,78,221,0.5);
-      background: linear-gradient(135deg, #c77dff 0%, #9d4edd 50%, #7b2cbf 100%);
-    }
-    button:active {
-      transform: translateY(0);
-    }
-    button.active {
-      background: linear-gradient(135deg, #7b2cbf 0%, #5a189a 100%);
-      box-shadow: 0 6px 25px rgba(123,44,191,0.6);
-      transform: scale(1.05);
-    }
-    button.active::after {
-      content: "✓";
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      background: #5a189a;
-      color: white;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1em;
-      border: 3px solid white;
-    }
-    #manual-input {
-      display: none;
-      margin-bottom: 20px;
-      animation: fadeIn 0.3s ease;
-      width: 100%;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.02); }
-    }
-    .input-group {
-      margin-bottom: 15px;
-      text-align: right;
-    }
-    input {
-      padding: 12px 18px;
-      border-radius: 25px;
-      border: 2px solid #9d4edd;
-      margin: 6px 0;
-      font-size: 1em;
-      font-family: "Amiri", serif;
-      width: 100%;
-      transition: border-color 0.3s ease;
-    }
-    input:focus {
-      outline: none;
-      border-color: #7b2cbf;
-      box-shadow: 0 0 10px rgba(157,78,221,0.3);
-    }
-    input::placeholder {
-      color: #c77dff;
-    }
-    .example {
-      font-size: 0.9em;
-      color: #7b2cbf;
-      margin-top: 5px;
-      text-align: right;
-    }
-    #prayer-times {
-      background: #ffffff;
-      border-radius: 20px;
-      box-shadow: 0 8px 30px rgba(123,44,191,0.2);
-      padding: 25px;
-      width: 100%;
-      border: 3px solid #9d4edd;
-      color: #1a1a1a;
-      margin-bottom: 20px;
-    }
-    .city {
-      margin-bottom: 20px;
+      padding: 12px 25px;
       font-size: 1.2em;
-      font-weight: 700;
-      color: #7b2cbf;
-      padding-bottom: 12px;
-      border-bottom: 2px solid #9d4edd;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      font-family: 'Amiri', serif;
+      width: 100%;
+      max-width: 300px;
     }
-    .prayer-row {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr 1.2fr;
-      gap: 10px;
-      align-items: center;
-      margin: 10px 0;
-      padding: 12px;
-      background: rgba(157,78,221,0.08);
-      border-radius: 12px;
-      transition: all 0.3s ease;
-    }
-    .prayer-row:hover {
-      background: rgba(157,78,221,0.15);
-      transform: scale(1.02);
-    }
-    .prayer-row.next-prayer {
-      background: linear-gradient(135deg, rgba(123,44,191,0.2), rgba(157,78,221,0.25));
-      border: 2px solid #7b2cbf;
-      animation: pulse 2s infinite;
-    }
-    .prayer-name {
-      font-size: 1em;
-      font-weight: 700;
-      color: #3c096c;
-      text-align: right;
-    }
-    .prayer-time {
-      font-size: 1em;
-      font-weight: 700;
-      color: #7b2cbf;
-      text-align: center;
-    }
-    .time-12 {
-      font-size: 1em;
-      display: block;
-      margin-bottom: 3px;
-    }
-    .time-24 {
-      font-size: 0.85em;
-      opacity: 0.7;
-      display: block;
-    }
-    .iqama-time {
-      font-size: 1em;
-      font-weight: 600;
-      color: #9d4edd;
-      text-align: left;
-    }
-    .header-row {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr 1.2fr;
-      gap: 10px;
-      margin-bottom: 15px;
-      padding: 10px;
-      font-size: 1em;
-      font-weight: 700;
-      color: #5a189a;
-      border-bottom: 2px dashed #c77dff;
-    }
-    .header-item {
-      text-align: center;
-    }
-    .header-item:first-child {
-      text-align: right;
-    }
-    .header-item:last-child {
-      text-align: left;
-    }
-    #next-prayer-box {
-      margin-top: 20px;
-      padding: 15px;
-      background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 100%);
-      border-radius: 15px;
-      color: white;
-      box-shadow: 0 6px 20px rgba(123,44,191,0.4);
-    }
-    #next-prayer-name {
-      font-size: 1.1em;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-    #countdown {
-      font-size: 1.4em;
-      font-weight: 700;
-      margin-top: 10px;
-      letter-spacing: 2px;
-    }
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-      margin-right: 10px;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+
+    .button:hover {
+      background-color: #1565c0;
+      transform: scale(1.05);
     }
 
     @media (max-width: 768px) {
       body {
-        font-size: 15px;
+        padding: 12px;
       }
+      
+      .container {
+        padding: 18px;
+      }
+      
       h1 {
-        font-size: 1.5em;
-        margin-bottom: 15px;
+        font-size: 1.6em;
+        margin-top: 10px;
       }
-      #controls {
-        flex-direction: column;
-        align-items: center;
+      
+      .verse {
+        font-size: 1.4em;
+        min-height: 90px;
+        padding: 12px;
+        line-height: 1.7;
       }
-      button {
-        width: 100%;
-        max-width: 280px;
-      }
-      #prayer-times {
-        padding: 20px 15px;
-      }
-      .prayer-row {
-        grid-template-columns: 1fr;
-        gap: 8px;
-        text-align: center;
-      }
-      .header-row {
-        display: none;
-      }
-      .prayer-name, .prayer-time, .iqama-time {
-        text-align: center;
-      }
-       .time-12  time-12  {
+      
+      .bismillah {
         font-size: 1em;
       }
-      .time-24 {
-        font-size: 0.85em;
-      }
-      #next-prayer-name {
+      
+      .button {
         font-size: 1.1em;
-      }
-      #countdown {
-        font-size: 1.3em;
+        padding: 10px 20px;
       }
     }
 
     @media (max-width: 480px) {
       body {
         padding: 10px;
-        font-size: 14px;
       }
+      
+      .container {
+        padding: 15px;
+        border-radius: 12px;
+      }
+      
       h1 {
         font-size: 1.4em;
       }
-      #prayer-times {
-        padding: 15px 10px;
-        border-radius: 15px;
-      }
-      .city {
-        font-size: 1.1em;
-        margin-bottom: 15px;
-      }
-      .prayer-name {
-        font-size: 1em;
-      }
-      .prayer-time, .iqama-time {
-        font-size: 1em;
-      }
-      .time-12 {
-        font-size: 1em;
-      }
-      #next-prayer-box {
-        padding: 12px;
-      }
-      #next-prayer-name {
-        font-size: 1.1em;
-      }
-      #countdown {
+      
+      .verse {
         font-size: 1.2em;
+        min-height: 80px;
+        padding: 10px;
+        line-height: 1.6;
+        margin: 15px 0;
+      }
+      
+      .bismillah {
+        font-size: 0.95em;
+        margin: 10px 0;
+      }
+      
+      .button {
+        font-size: 1em;
+        padding: 10px 18px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>مواقيت الصلاة والإقامة</h1>
-
-    <div class="info-box">
-      <p>اختر طريقة تحديد الموقع المناسبة لك:</p>
-      
-      <div class="info-option">
-        <div class="icon">•</div>
-        <div class="option-desc">
-          <strong>تحديد بالموقع (GPS)</strong>  - الأكثر دقة. ننصح باستخدامه للحصول على مواقيت صلاة دقيقة بناءً على موقعك الفعلي.
-        </div>
-      </div>
-      
-      <div class="info-option">
-        <div class="icon">•</div>
-        <div class="option-desc">
-          <strong>إدخال يدوي</strong> - يجب إدخال اسم الدولة والمدينة بشكل صحيح تماماً للحصول على نتائج دقيقة.
-        </div>
-      </div>
-      
-      <div class="info-option">
-        <div class="icon">•</div>
-        <div class="option-desc">
-          <strong>تحديد تلقائي (IP)</strong> - ليس دقيقاً 100%، قد لا يعكس موقعك الفعلي بدقة.
-        </div>
-      </div>
-    </div>
-
-    <div id="controls">
-      <button id="btn-gps" onclick="useGPS()">تحديد بالموقع (GPS)</button>
-      <button id="btn-manual" onclick="showManual()">إدخال يدوي</button>
-      <button id="btn-ip" onclick="useIP()">تحديد تلقائي (IP)</button>
-    </div>
-
-    <div id="manual-input">
-      <div class="input-group">
-        <input type="text" id="country" placeholder="اسم الدولة (يجب أن يكون صحيحاً تماماً)">
-        <div class="example">مثال: مصر، السعودية، الأردن - يجب كتابة الاسم بشكل صحيح</div>
-      </div>
-      <div class="input-group">
-        <input type="text" id="city" placeholder="اسم المدينة (يجب أن يكون صحيحاً تماماً)">
-        <div class="example">مثال: القاهرة، الرياض، عمان - يجب كتابة الاسم بشكل صحيح</div>
-      </div>
-      <button onclick="useManual()">عرض المواقيت</button>
-    </div>
-
-    <div id="prayer-times">جاري تحديد موقعك...</div>
+    <h1>عرض ادعيه</h1>
+    <div class="bismillah" id="count"></div>
+    <div class="verse" id="verse">اضغط على الزر لرؤية دعاء عشوائي</div>
+    <button class="button" onclick="getRandomVerse()">عرض دعاء عشوائي</button>
   </div>
-<script src="main.js"></script>
+
+  <script>
+  const verses = [
+     "اللهم اجعلني من عبادك الصادقين وأبعد عني النفاق والرياء",
+
+      "اللهم اجعلني ممن يسمعون ذكرك فتخشع قلوبهم ويزدادون إيمانًا",
+
+      "اللهم ارزقني لسانًا ذاكرًا وقلبًا شاكرًا وعملًا متقبلًا",
+
+      "اللهم اجعلني من الذين يدخلون الجنة بغير حساب ولا عذاب",
+
+      "اللهم اجعلني من الذين يتوكلون عليك في كل أمر ويستعينون بك في كل حال",
+
+      "اللهم اجعل لي نصيبًا من كل خير تقسمه لعبادك الصالحين",
+
+      "اللهم اجعلني من أهل الصدق والأمانة وأبعد عني الكذب والخيانة",
+
+      "اللهم ارزقني السعادة في الدنيا والفوز في الآخرة",
+
+      "اللهم اجعلني ممن يدعونك بإلحاح فتستجيب لهم برحمتك",
+
+      "اللهم اجعلني من الذين يعمرون أوقاتهم بذكرك ويخلصون عملهم لوجهك",
+
+      "اللهم ارزقني خشوعًا في الصلاة وحلاوةً في العبادة",
+
+      "اللهم اجعلني من الذين يُحبون لقائك وتحب لقائهم",
+
+      "اللهم اجعلني من الذين يسارعون إلى الخيرات ويحرصون على رضاك",
+
+      "اللهم اجعلني من الذين تحفهم الملائكة وتغشاهم الرحمة",
+
+      "اللهم اجعلني من أهل التوكل عليك والثقة في قضائك",
+
+      "اللهم اجعلني ممن يفتحون أبواب الخير ويغلقون أبواب الشر",
+
+      "اللهم ارزقني بركة في رزقي وصحة في بدني وسعة في وقتي",
+
+      "اللهم اجعلني من الذين يفرحون بذكرك ويبكون من خشيتك",
+
+      "اللهم اجعلني من عبادك الذين تُحبهم وتُحب قربهم",
+
+      "اللهم اجعلني من الذين يُبشرون بالجنة يوم القيامة",
+
+      "اللهم اجعلني من أهل الخير وأعني على طاعتك ورضاك",
+
+      "اللهم ارزقني حسن الظن بك وتوفيقًا دائمًا في حياتي",
+
+      "اللهم طهر قلبي من كل سوء واجعلني من عبادك الصالحين",
+
+      "اللهم اجعل لي نورًا في قبري ورحمة يوم ألقاك",
+
+      "اللهم اجعل عملي صالحًا خالصًا لوجهك الكريم",
+
+      "اللهم اجعلني من أهل الفردوس الأعلى واجمعني بأحبتي فيه",
+
+      "اللهم ارزقني الصبر على البلاء والشكر على النعم",
+
+      "اللهم اجعل القرآن شفاءً لقلبي وضياءً لروحي",
+
+      "اللهم اجعلني ممن يستغفرونك دائمًا ويسارعون إلى طاعتك",
+
+      "اللهم ارزقني الخير في كل أمر وأبعد عني الشر كله",
+
+      "اللهم اجعلني من الذين يستمعون القول فيتبعون أحسنه",
+
+      "اللهم اجعلني من عبادك المتوكلين عليك والمطمئنين برضاك",
+
+      "اللهم ارزقني القناعة بما أعطيتني والرضا بحكمك",
+
+      "اللهم اجعلني من الذين يُحبونك ويخشونك حق خشيتك",
+
+      "اللهم اجعلني من الذين يدعونك فيستجيب لهم ويسألونك فيعطيهم",
+
+      "اللهم اجعلني مفتاحًا للخير مغلاقًا للشر",
+
+      "اللهم اجعلني من الذين يحسنون العمل ويتقبل منهم",
+
+      "اللهم ارزقني علمًا نافعًا وعملاً صالحًا ورزقًا حلالاً",
+
+      "اللهم اجعلني من أهل القرآن الذين هم أهلك وخاصتك",
+
+      "اللهم اجعل لي نصيبًا من رحمتك وبركة من فضلك",
+
+      "اللهم اجعل يومي خيرًا من أمسي، واجعل غدي خيرًا من يومي، وبارك لي في عمري",
+
+      "اللهم ارزقني رحمةً من عندك تغنيني بها عن رحمة من سواك",
+
+      "اللهم اجعل ذكرك نورًا لي في حياتي، ورحمتك زادًا لي في آخرتي",
+
+      "اللهم اجعلني من أهل البصيرة والحكمة، ووفقني للصواب في كل أمري",
+
+      "اللهم اجعل لي قدم صدق عندك يوم ألقاك، وارزقني جنة الفردوس بغير حساب",
+
+      "اللهم اجعل لي لسانًا صادقًا، وقلبًا خاشعًا، وبدنًا على البلاء صابرًا",
+
+      "اللهم ارزقني حب الطاعات، وبغض المنكرات، واجعلني من المتقين",
+
+      "اللهم اجعل عملي في ميزان حسناتي، واغفر لي خطاياي وزلاتي",
+
+      "اللهم اجعلني من أهل الجود والكرم، ومن عبادك المحسنين",
+
+      "اللهم اجعلني من الذين يحرصون على رضاك، ولا يخشون فيك لومة لائم",
+
+      "اللهم ارزقني حياةً مليئةً بطاعتك، وقلبًا متعلقًا بك، ورضا يملأ حياتي",
+
+      "اللهم اجعل لي في كل عمل نية صالحة، وفي كل دعاء إجابة، وفي كل رزق بركة",
+
+      "اللهم اجعل القرآن ربيع قلبي، وشفاء صدري، وضياء قبري",
+
+      "اللهم ارزقني نعمة الشكر على نعمك، والصبر على قضائك، والرضا بحكمك",
+
+      "اللهم اجعلني من الذين يُؤدون الأمانة، ويُوفون بالعهد، ويحسنون العمل",
+
+      "اللهم اجعلني ممن يحبون الخير للناس، ويسعون في إعانتهم على طاعتك",
+
+      "اللهم اجعلني من عبادك الذين يستبشرون برحمتك، ويسألونك من فضلك العظيم",
+
+      "اللهم اجعلني ممن يُكثرون الدعاء، ويُحسنون الظن بك، ويتوكلون عليك",
+
+      "اللهم ارزقني عافية لا تُغادرني، وبركة تُلازمني، وفضلًا يغنيني عن غيرك",
+
+      "اللهم اجعل لي في قلبي طمأنينة، وفي حياتي سكينة، وفي رزقي بركة",
+
+      "اللهم اجعلني ممن تُحبهم ويُحبونك، ومن الذين يعملون لرضاك",
+
+      "اللهم ارزقني بركة في وقتي، وزيادة في رزقي، وصلاحًا في ذريتي",
+
+      "اللهم اجعلني من الذين يسارعون إلى الخيرات، ويسابقون إلى الطاعات",
+
+      "اللهم إني أعوذ بك من سوء الخاتمة، ومن الغفلة عن ذكرك، ومن قسوة القلب",
+
+      "اللهم اجعلني من أهل القلوب الطيبة، والأيدي المعطاءة، والوجوه البشوشة",
+
+      "اللهم ارزقني صدق التوبة، وجميل الصبر، وحسن العمل",
+
+      "اللهم اجعلني من الذين يُحسنون الظن بك، ويتوكلون عليك في كل أمر",
+
+      "اللهم اجعل لي من كل هم فرجًا، ومن كل ضيق مخرجًا، ومن كل عسر يسرًا",
+
+      "اللهم ارزقني الثبات على دينك، وأبعدني عن الزلل والخطأ",
+
+      "اللهم اجعل لي في كل بلاء حكمة، وفي كل محنة نعمة، وفي كل شدة فرجًا",
+
+      "اللهم اجعلني من الذاكرين لك كثيرًا والذاكرات، ووفقني لما تحب وترضى",
+
+      "اللهم اجعل لي في كل خطوة نورًا، وفي كل كلمة حكمة، وفي كل عمل بركة",
+
+      "اللهم اجعلني ممن تقول لهم: ادخلوا الجنة لا خوف عليكم ولا أنتم تحزنون",
+
+      "اللهم اجعلني من أهل الفردوس الأعلى، ونجني من عذاب النار",
+
+      "اللهم ارزقني ذكرك في الرخاء والشدة، ووفقني للعمل الذي تحبه وترضاه",
+
+      "اللهم اغسل قلبي من الحسد والحقد، وطهر نفسي من الغرور والكبرياء",
+
+      "اللهم اجعلني من عبادك الذين تحبهم وترضى عنهم، واكتب لي القبول في الأرض والسماء",
+
+      "اللهم ارزقني قلبًا نقيًا، ولسانًا صادقًا، وعملاً متقبلًا",
+
+      "اللهم اجعلني مفتاحًا للخير، مغلاقًا للشر، وسخرني لخدمة دينك",
+
+      "اللهم اجعلني من الذين يحبونك ويحبون من يحبك، واجعل حبي لك فوق كل حب",
+
+      "اللهم إني أسألك العفو عما مضى، والصلاح لما بقي، والرضا بما قضيت",
+
+      "اللهم اجعل أوقاتي عامرةً بذكرك، وقلبي مطمئنًا بحبك، وعملي مقبولًا لديك",
+
+      "اللهم ارزقني حياةً سعيدة، ومماتًا طيبًا، ولقاءً هنيئًا بك",
+
+      "اللهم اجعلني من الساجدين الذاكرين، ومن القائمين المخلصين",
+
+      "اللهم اجعل حُسن ظني بك يقيني من كل شر، ورضاك عني يغنيني عن كل شيء",
+
+      "اللهم اجعل لي في هذا اليوم خيرًا، وفي غدي بركةً، وفي آخرتي فوزًا",
+
+      "اللهم اجعلني من الذين يحبون الخير للناس، ويسعون في قضاء حوائجهم",
+
+      "اللهم ارزقني القناعة والرضا، وأبعد عني الطمع والجحود",
+
+      "اللهم اجعلني من أهل اليقين، وثبتني على دينك، وأحسن خاتمتي",
+
+      "اللهم اجعلني من الموقنين بوعدك، المستبشرين برحمتك، الساعين لطاعتك",
+
+      "اللهم ارزقني التوفيق والسداد في كل أموري، وبارك لي في كل خطواتي",
+
+      "اللهم اجعل لي في ظلمات القبر نورًا، وعند الصراط نورًا، وفي الجنة نورًا",
+
+      "اللهم إني أعوذ بك من فتنة المحيا والممات، ومن فتنة المسيح الدجال",
+
+      "اللهم اجعلني عبدًا شكورًا، وبارًا بوالدي، وحسن الخلق مع عبادك",
+
+      "اللهم إني أسألك راحة البال، وسكينة القلب، واطمئنان النفس",
+
+      "اللهم اجعل لي نصيبًا من رحمتك، وبركةً من عطائك، وسعةً في رزقك",
+
+      "اللهم إني أسألك صدق التوبة، وحُسن الإنابة، وقبول العمل",
+
+      "اللهم اجعلني من عبادك المخلصين، ووفقني لعمل صالح ترضى به عني",
+
+      "اللهم طهرني من الذنوب والخطايا كما يُطهر الثوب الأبيض من الدنس",
+
+      "اللهم اجعلني من الذين يستمعون القول فيتبعون أحسنه، واهدني إلى صراطك المستقيم",
+
+      "اللهم اجعل لي في دربي نورًا، وفي عملي نورًا، وفي آخرتي نورًا",
+
+      "اللهم ارزقني العلم النافع، والعمل الصالح، والقلب السليم",
+
+      "اللهم اجعلني من أهل القرآن الذين هم أهلك وخاصتك",
+
+      "اللهم ارزقني الإخلاص في القول والعمل، ونجني من الرياء والسمعة",
+
+      "اللهم اجعل لي نصيبًا في كل خير تقسمه، وفي كل رزق تبسطه، وفي كل ضر تكشفه",
+
+      "اللهم ارزقني صدق التوكل عليك، وحسن الظن بك، وحلاوة الإيمان بقربك",
+
+      "اللهم اجعلني ممن يرضى بقضائك، ويحمدك على نعمائك، ويصبر على بلائك",
+
+      "اللهم ارزقني قلبًا خاشعًا، ولسانًا ذاكرًا، وجسدًا على البلاء صابرًا",
+
+      "اللهم اجعل لي في كل ابتلاء حكمة، وفي كل نعمة شكرًا، وفي كل عسر يسرً",
+
+      "اللهم اجعل يومي خيرًا من أمسي، وغدي خيرًا من يومي، واغفر لي ما مضى وأصلح لي ما بقي",
+
+      "اللهم اغفر لي ما أسررت وما أعلنت، وما أخطأت وما تعمدت، وما جهلت وما علمت",
+
+      "اللهم اجعلني من أهل الصبر والشكر، وأعني على ذكرك وشكرك وحسن عبادتك",
+
+      "اللهم ارزقني حسن الخاتمة، ونجني من فتنة القبر، وأهوال يوم القيامة",
+
+      "اللهم اجعل لي في قلبي نورًا، وفي لساني ذكرًا، وفي عملي بركة، وفي رزقي زيادة",
+
+      "اللهم اجعل حبي لك أعظم من حبي لنفسي وأهلي ومالي، واجعل طاعتك أغلى عندي من الدنيا وما فيها",
+
+      "اللهم اجعل دعائي مستجابًا، وعملي صالحًا، وذنوبي مغفورة، وهمومي مكفية",
+
+      "اللهم ألبسني ثوب العافية، وجملني بزينة التقوى، وأكرمني بعز الطاعة",
+
+      "اللهم اجعلني سببًا في الخير، وهادياً للحق، وداعيًا إلى الصراط المستقيم",
+
+      "اللهم اجعل القرآن الكريم شفيعًا لي يوم القيامة، ونورًا لي في قبري، ودليلًا لي في حياتي",
+
+      "اللهم اجعل لي لسانًا ذاكرًا، وقلبًا شاكرًا، وعملًا صالحًا متقبلًا",
+
+      "اللهم اجعلنا من الذين يحبونك ويخشونك، ومن الذين يستمعون القول فيتبعون أحسنه",
+
+      "اللهم ارزقني حسن الظن بك، والتوكل عليك، والرضا بما قسمته لي",
+
+      "اللهم اجعل لي في كل خطوة بركة، وفي كل عمل توفيقًا، وفي كل أمر خيرًا",
+
+      "اللهم اجعلني من التوابين واجعلني من المتطهرين، واجعلني من عبادك الصالحين",
+
+      "اللهم طهِّر قلبي من النفاق، وعملي من الرياء، ولساني من الكذب، وعيني من الخيانة",
+
+      "اللهم اجعل لي من كل همٍ فرجًا، ومن كل ضيقٍ مخرجًا، وارزقني من حيث لا أحتسب",
+
+      "اللهم إني أسألك علماً نافعاً، ورزقاً طيباً، وعملاً متقبلاً",
+
+      "اللهم اجعلنا ممن يُقال لهم يوم القيامة: ادخلوا الجنة بسلامٍ آمنين",
+
+      "اللهم ارزقني بركة في العمر، وسعة في الرزق، وصحة في البدن، وحسنًا في الخاتمة",
+
+      "اللهم اجعل عملي كله خالصًا لوجهك الكريم، ولا تجعل فيه لأحدٍ غيرك شيئًا",
+
+      "اللهم إني أسألك العفو والعافية في الدنيا والآخرة",
+
+      "اللهم اغفر لي ولوالدي وللمؤمنين يوم يقوم الحساب",
+
+      "اللهم إني أعوذ بك من الهم والحزن، والعجز والكسل، والبخل والجبن، وضلع الدين وغلبة الرجال",
+
+      "اللهم ارزقني حبك وحب من يحبك، وحب عمل يقربني إلى حبك",
+
+      "اللهم اجعل القرآن العظيم ربيع قلبي ونور صدري وجلاء حزني وذهاب همي",
+
+      "اللهم اهدني وسددني، اللهم إني أسألك الهدى والتقى والعفاف والغنى",
+
+      "اللهم صل وسلم وبارك على نبينا محمد وعلى آله وصحبه أجمعين",
+
+      "اللهم اجعل لي نورًا في قلبي ونورًا في سمعي ونورًا في بصري ونورًا من فوقي ونورًا من تحتي",
+
+      "اللهم إنك عفو تحب العفو فاعفُ عني",
+
+      "اللهم إني أعوذ بك من شر ما عملت ومن شر ما لم أعمل",
+
+      "ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار",
+
+      "اللهم اشرح لي صدري ويسر لي أمري واحلل عقدة من لساني يفقهوا قولي",
+
+      "اللهم اجعل آخر كلامنا من الدنيا لا إله إلا الله محمد رسول الله",
+
+      "اللهم ارحم موتانا وموتى المسلمين واشفِ مرضانا ومرضى المسلمين",
+
+      "اللهم إني أعوذ بك من زوال نعمتك وتحول عافيتك وفجاءة نقمتك وجميع سخطك"
+    ];
+
+    document.getElementById("count").textContent = "يشمل " + verses.length + " دعاءً";
+
+      function getRandomVerse() {
+      const randomIndex = Math.floor(Math.random() * verses.length);
+      document.getElementById("verse").textContent = verses[randomIndex];
+    }
+  </script>
 </body>
 </html>
